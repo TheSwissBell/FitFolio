@@ -9,36 +9,37 @@ import Snackbar from '@mui/material/Snackbar';
 import { API_URL } from '../constants'
 
 
-export default function Customerlist() {
-    const [customers, setCustomers] = useState([]);
+export default function Traininglist() {
+    const [trainings, setTrainings] = useState([]);
     const [open, setOpen] = useState(false);
     const [snackbarMsg, setSnackbarMsg] = '';
 
-    useEffect(() => fetchCustomers(), [])
+    useEffect(() => fetchTrainings(), [])
 
-    const fetchCustomers = () => {
-        fetch(API_URL + 'api/customers')
+    const fetchTrainings = () => {
+        fetch(API_URL + 'gettrainings')
             .then(response => response.json())
-            .then(data => setCustomers(data.content))
+            .then(data => setTrainings(data))
     }
 
     const gridRef = useRef();
-   
+
 
     // Grid
     const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
-        { field: 'firstname' },
-        { field: 'lastname' },
-        { field: 'streetaddress', width: 170 },
-        { field: 'postcode', width: 100 },
-        { field: 'city' },
-        { field: 'email', width: 180 }
+        { field: 'date', width: 220 },
+        { field: 'duration' },
+        { field: 'activity' },
+        {
+            field: 'customer',
+            cellRenderer: params => params.value.firstname + ' ' + params.value.lastname
+        },
 
     ]);
     const defaultColDef = useMemo(() => ({
         sortable: true,
         filter: true,
-        width: 154,
+        width: 130,
         cellClass: 'ag-left-aligned-cell'
     }))
 
@@ -49,7 +50,7 @@ export default function Customerlist() {
                     ref={gridRef}
                     onGridReady={params => gridRef.current = params.api}
                     rowSelection="single"
-                    rowData={customers}
+                    rowData={trainings}
                     columnDefs={columnDefs}
                     defaultColDef={defaultColDef}
                     animateRows={true}
