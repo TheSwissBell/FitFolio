@@ -1,4 +1,7 @@
-# Getting Started with Create React App
+# FitFolio
+Front-end React ES6 app for a Personal Trainer company. They can manage their customers and trainings
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
