@@ -1,1 +1,1 @@
-export const API_URL = 'http://carrestapi.herokuapp.com/';
+export const API_URL = 'https://traineeapp.azurewebsites.net/api';
