@@ -1,10 +1,16 @@
-import logo from './logo.svg';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
 import './App.css';
 import CustomerList from './components/CustomerList';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography'
 import Traininglist from './components/TrainingList';
+import Home from './components/Home'
 
 function App() {
   return (
@@ -16,8 +22,16 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <CustomerList></CustomerList>
-      <Traininglist></Traininglist>
+      <BrowserRouter>
+        <Link to="/">Home</Link>{' '}
+        <Link to="/CustomersList">Customers</Link>{' '}
+        <Link to="/TrainingsList">Trainings</Link>{' '}
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/CustomersList" element={<CustomerList />} />
+          <Route path="/TrainingsList" element={<Traininglist />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
