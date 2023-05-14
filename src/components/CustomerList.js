@@ -23,7 +23,7 @@ export default function Customerlist() {
     }
 
     const gridRef = useRef();
-   
+
 
     // Grid
     const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
@@ -53,6 +53,8 @@ export default function Customerlist() {
                     columnDefs={columnDefs}
                     defaultColDef={defaultColDef}
                     animateRows={true}
+                    pagination={true}
+                    paginationPageSize={10}
                 >
                 </AgGridReact>
             </div>

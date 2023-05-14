@@ -54,6 +54,8 @@ export default function Traininglist() {
                     columnDefs={columnDefs}
                     defaultColDef={defaultColDef}
                     animateRows={true}
+                    pagination={true}
+                    paginationPageSize={10}
                 >
                 </AgGridReact>
             </div>
