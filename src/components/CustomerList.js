@@ -7,8 +7,11 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
+import AddTraining from "./AddTraining";
 
-import { API_URL } from '../constants'
+
+import { API_URL } from '../constants';
+import { API_CUSTOMERID_TRAINING } from '../constants';
 
 
 export default function Customerlist() {
@@ -29,7 +32,7 @@ export default function Customerlist() {
     const gridRef = useRef();
 
 
-  
+
     const defaultColDef = useMemo(() => ({
         sortable: true,
         filter: true,
@@ -98,22 +101,41 @@ export default function Customerlist() {
         }
     };
 
-      // Grid
-      const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
-      { field: 'firstname' },
-      { field: 'lastname' },
-      { field: 'streetaddress', width: 170 },
-      { field: 'postcode', width: 120 },
-      { field: 'city' },
-      { field: 'email', width: 180 },
-      {
-          cellRenderer: params => <EditCustomer params={params.data} updateCustomer={updateCustomer} />,
-          width: 128
-      },
-      { field: '_links.self.href', headerName: 'Delete', cellRenderer: deleteButtonRender, sortable: false, filter: false, width: 120 },
+    const addTraining = (training) => {
+        fetch(API_CUSTOMERID_TRAINING, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(training)
+        })
+        .then(response => {
+            if (response.ok) return response.json();
+            alert('Something get wrong');
+        })
+        .catch(err => console.error(err));
+    };
+
+    // Grid
+    const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
+        {
+            cellRenderer: params =>
+                <AddTraining addTraining={addTraining} data={params.data} />, width: 150
+        },
+        { field: 'firstname' },
+        { field: 'lastname' },
+        { field: 'streetaddress', width: 170 },
+        { field: 'postcode', width: 120 },
+        { field: 'city' },
+        { field: 'email', width: 180 },
+        {
+            cellRenderer: params => <EditCustomer params={params.data} updateCustomer={updateCustomer} />,
+            width: 128
+        },
+        { field: '_links.self.href', headerName: 'Delete', cellRenderer: deleteButtonRender, sortable: false, filter: false, width: 120 },
 
 
-  ]);
+    ]);
 
     return (
         <div>
