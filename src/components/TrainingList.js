@@ -25,6 +25,38 @@ export default function Traininglist() {
 
     const gridRef = useRef();
 
+    const deleteButtonRender = params => {
+        return (
+            <>
+                <Button
+                    size='small'
+                    color='error'
+                    onClick={() => deleteTraining(params)}
+                >
+                    Delete
+                </Button>
+            </>
+
+        )
+    }
+
+    const deleteTraining = (params) => {
+        if (window.confirm(`Are you sure you want to delete this training ?`)) {
+            alert('Training deleted!!');
+            fetch(API_URL + `api/trainings/${params.data.id}`, { method: 'DELETE' })
+                .then(res => {
+                    if (res.ok) {
+                        setSnackbarMsg('Training deleted successfully');
+                        setOpen(true);
+                        fetchTrainings();
+                    }
+                    else {
+                        alert('Something went wrong in the deletion of the training');
+                    };
+                }).catch(err => console.error(err))
+        }
+    };
+
 
     // Grid
     const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
@@ -35,6 +67,8 @@ export default function Traininglist() {
             field: 'customer',
             cellRenderer: params => params.value.firstname + ' ' + params.value.lastname
         },
+        { field: '_links.self.href', headerName: 'Delete', cellRenderer: deleteButtonRender, sortable: false, filter: false, width: 120 },
+
 
     ]);
     const defaultColDef = useMemo(() => ({
