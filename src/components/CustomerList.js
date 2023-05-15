@@ -30,7 +30,7 @@ export default function Customerlist() {
         { field: 'firstname' },
         { field: 'lastname' },
         { field: 'streetaddress', width: 170 },
-        { field: 'postcode', width: 100 },
+        { field: 'postcode', width: 120 },
         { field: 'city' },
         { field: 'email', width: 180 }
 
