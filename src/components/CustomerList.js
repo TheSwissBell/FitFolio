@@ -18,6 +18,7 @@ export default function Customerlist() {
     const [customers, setCustomers] = useState([]);
     const [open, setOpen] = useState(false);
     const [snackbarMsg, setSnackbarMsg] = '';
+    const [gridExport, setgridExport] = useState(null);
 
 
 
@@ -116,6 +117,17 @@ export default function Customerlist() {
         .catch(err => console.error(err));
     };
 
+    const onGridReady = (params) => {
+        setgridExport(params.api);
+    };
+
+    const exportCSV = () => {
+        const params = {
+            columnKeys: ['firstname', 'lastname', 'streetaddress', 'postcode', 'city','email', 'phone']
+        };
+        gridExport.exportDataAsCsv(params);
+    };
+
     // Grid
     const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
         {
@@ -151,8 +163,16 @@ export default function Customerlist() {
                     animateRows={true}
                     pagination={true}
                     paginationPageSize={10}
+                    onGridReady={(params) => onGridReady(params)}
                 >
                 </AgGridReact>
+                <Button
+                    color="primary"
+                    size="small"
+                    onClick={exportCSV}
+                >
+                    Export customers to CSV
+                </Button>
             </div>
             <Snackbar
                 open={open}
