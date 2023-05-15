@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
+import dayjs from 'dayjs';
 
 import { API_URL } from '../constants'
 
@@ -27,7 +28,7 @@ export default function Traininglist() {
 
     // Grid
     const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
-        { field: 'date', width: 220 },
+        { field: 'date', width: 220, cellRenderer: params => dayjs(params.value).format('DD.MM.YYYY HH:mm')},
         { field: 'duration' },
         { field: 'activity' },
         {
