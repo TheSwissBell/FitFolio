@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/TheSwissBell/FitFolio/static/css/main.cd827901.css",
+    "main.js": "/TheSwissBell/FitFolio/static/js/main.61066152.js",
+    "static/js/787.1c4cba90.chunk.js": "/TheSwissBell/FitFolio/static/js/787.1c4cba90.chunk.js",
+    "index.html": "/TheSwissBell/FitFolio/index.html",
+    "main.cd827901.css.map": "/TheSwissBell/FitFolio/static/css/main.cd827901.css.map",
+    "main.61066152.js.map": "/TheSwissBell/FitFolio/static/js/main.61066152.js.map",
+    "787.1c4cba90.chunk.js.map": "/TheSwissBell/FitFolio/static/js/787.1c4cba90.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cd827901.css",
+    "static/js/main.61066152.js"
+  ]
+}
