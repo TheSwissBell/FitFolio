@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
+import AddCustomer from "./AddCustomer";
 
 import { API_URL } from '../constants'
 
@@ -42,9 +43,25 @@ export default function Customerlist() {
         cellClass: 'ag-left-aligned-cell'
     }))
 
+    
+    const addCustomer = (customer) => {
+        fetch(API_URL + 'api/customers', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(customer)  // Cast JavaScript object into JSON stream
+        })
+            .then(response => {
+                if (response.ok)
+                    fetchCustomers();
+                else
+                    alert('Oups! Something went wrong in addition of a new customer: ' + response.statusText)
+            })
+    }
+
     return (
         <div>
             <div className="ag-theme-material" style={{ height: 600, width: 1000, margin: 'auto' }}>
+                <AddCustomer addCustomer={addCustomer} />
                 <AgGridReact
                     ref={gridRef}
                     onGridReady={params => gridRef.current = params.api}
