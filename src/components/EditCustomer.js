@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function AddCustomer({ addCustomer }) {   
+export default function EditCustomer(props) {
     const [open, setOpen] = React.useState(false);
     const [customer, setCustomer] = React.useState(
         {
@@ -21,6 +21,15 @@ export default function AddCustomer({ addCustomer }) {
     );
 
     const handleClickOpen = () => {
+        setCustomer({
+            firstname: props.params.firstname,
+            lastname: props.params.lastname,
+            email: props.params.email,
+            phone: props.params.phone,
+            streetaddress: props.params.streetaddress,
+            postcode: props.params.postcode,
+            city: props.params.city
+        });
         setOpen(true);
     };
 
@@ -28,31 +37,19 @@ export default function AddCustomer({ addCustomer }) {
         setOpen(false);
     };
 
-    const handleCreate = () => {
-        addCustomer(customer);
+    const handleEdit = () => {
+        props.updateCustomer(customer, props.params.links[0].href);
         handleClose();
-        setCustomer(
-            {
-                firstname: '',
-                lastname: '',
-                email: '',
-                phone: '',
-                streetaddress: '',
-                postcode: '',
-                city: ''
-            }
-        )
-       
     };
 
 
     return (
         <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-                Add a new customer
+                Edit
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Add a new customer</DialogTitle>
+                <DialogTitle>Edit an existing customer</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -121,7 +118,7 @@ export default function AddCustomer({ addCustomer }) {
 
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleCreate}>Add</Button>
+                    <Button onClick={handleEdit}>Save</Button>
                 </DialogActions>
             </Dialog>
         </div>

@@ -6,6 +6,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import AddCustomer from "./AddCustomer";
+import EditCustomer from "./EditCustomer";
 
 import { API_URL } from '../constants'
 
@@ -33,7 +34,11 @@ export default function Customerlist() {
         { field: 'streetaddress', width: 170 },
         { field: 'postcode', width: 120 },
         { field: 'city' },
-        { field: 'email', width: 180 }
+        { field: 'email', width: 180 },
+        {
+            cellRenderer: params => <EditCustomer params={params.data} updateCustomer={updateCustomer} />,
+            width: 128
+        },
 
     ]);
     const defaultColDef = useMemo(() => ({
@@ -55,6 +60,20 @@ export default function Customerlist() {
                     fetchCustomers();
                 else
                     alert('Oups! Something went wrong in addition of a new customer: ' + response.statusText)
+            })
+    }
+
+    const updateCustomer = (editedCustomer, url) => {
+        fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(editedCustomer)  // Cast JavaScript object into JSON stream
+        })
+            .then(response => {
+                if (response.ok)
+                    fetchCustomers();
+                else
+                    alert('Oups! Something went wrong in the edition of the customer: ' + response.statusText)
             })
     }
 
