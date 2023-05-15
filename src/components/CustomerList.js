@@ -16,7 +16,7 @@ export default function Customerlist() {
     const [open, setOpen] = useState(false);
     const [snackbarMsg, setSnackbarMsg] = '';
 
-    useEffect(() => fetchCustomers(), [])
+
 
     const fetchCustomers = () => {
         fetch(API_URL + 'api/customers')
@@ -24,23 +24,12 @@ export default function Customerlist() {
             .then(data => setCustomers(data.content))
     }
 
+    useEffect(() => fetchCustomers(), [])
+
     const gridRef = useRef();
 
 
-    // Grid
-    const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
-        { field: 'firstname' },
-        { field: 'lastname' },
-        { field: 'streetaddress', width: 170 },
-        { field: 'postcode', width: 120 },
-        { field: 'city' },
-        { field: 'email', width: 180 },
-        {
-            cellRenderer: params => <EditCustomer params={params.data} updateCustomer={updateCustomer} />,
-            width: 128
-        },
-
-    ]);
+  
     const defaultColDef = useMemo(() => ({
         sortable: true,
         filter: true,
@@ -48,7 +37,7 @@ export default function Customerlist() {
         cellClass: 'ag-left-aligned-cell'
     }))
 
-    
+
     const addCustomer = (customer) => {
         fetch(API_URL + 'api/customers', {
             method: 'POST',
@@ -67,7 +56,7 @@ export default function Customerlist() {
         fetch(url, {
             method: 'PUT',
             headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify(editedCustomer)  // Cast JavaScript object into JSON stream
+            body: JSON.stringify(editedCustomer)
         })
             .then(response => {
                 if (response.ok)
@@ -76,6 +65,55 @@ export default function Customerlist() {
                     alert('Oups! Something went wrong in the edition of the customer: ' + response.statusText)
             })
     }
+
+    const deleteButtonRender = params => {
+        return (
+            <>
+                <Button
+                    size='small'
+                    color='error'
+                    onClick={() => deleteCustomer(params)}
+                >
+                    Delete
+                </Button>
+            </>
+
+        )
+    }
+
+    const deleteCustomer = (params) => {
+        if (window.confirm(`Are you sure you want to delete this customer (${params.data.firstname} ${params.data.lastname}) ?`)) {
+            alert(`${params.data.firstname} ${params.data.lastname} deleted!!`);
+            fetch(params.data.links[0].href, { method: 'DELETE' })
+                .then(res => {
+                    if (res.ok) {
+                        setSnackbarMsg('Customer deleted successfully');
+                        setOpen(true);
+                        fetchCustomers();
+                    }
+                    else {
+                        alert('Something went wrong in the deletion of the customer');
+                    };
+                }).catch(err => console.error(err))
+        }
+    };
+
+      // Grid
+      const [columnDefs] = useState([  // We don't to update it so no need for setColumnDefs
+      { field: 'firstname' },
+      { field: 'lastname' },
+      { field: 'streetaddress', width: 170 },
+      { field: 'postcode', width: 120 },
+      { field: 'city' },
+      { field: 'email', width: 180 },
+      {
+          cellRenderer: params => <EditCustomer params={params.data} updateCustomer={updateCustomer} />,
+          width: 128
+      },
+      { field: '_links.self.href', headerName: 'Delete', cellRenderer: deleteButtonRender, sortable: false, filter: false, width: 120 },
+
+
+  ]);
 
     return (
         <div>
